@@ -34,7 +34,7 @@ if __name__ == "__main__":
     m = d_pool.size
     clrs = []  # 颜色
     for c in np.linspace(16711680, 255, m):
-        clrs.append('#%06x' % c)
+        clrs.append('#%06x' % int(c))
     line_width = np.linspace(5, 2, m)
     titles = u'线性回归', u'Ridge回归'
     for t in range(2):
@@ -46,14 +46,14 @@ if __name__ == "__main__":
             model.fit(x, y)
             lin = model.get_params('linear')['linear']
             if t == 0:
-                print u'%d阶，系数为：' % d, lin.coef_.ravel()
+                print(u'%d阶，系数为：' % d, lin.coef_.ravel())
             else:
-                print u'%d阶，alpha=%.6f，系数为：' % (d, lin.alpha_), lin.coef_.ravel()
+                print(u'%d阶，alpha=%.6f，系数为：' % (d, lin.alpha_), lin.coef_.ravel())
             x_hat = np.linspace(x.min(), x.max(), num=100)
             x_hat.shape = -1, 1
             y_hat = model.predict(x_hat)
             s = model.score(x, y)
-            print s, '\n'
+            print(s, '\n')
             zorder = N - 1 if (d == 2) else 0
             plt.plot(x_hat, y_hat, color=clrs[i], lw=line_width[i], label=(u'%d阶，score=%.3f' % (d, s)), zorder=zorder)
         plt.legend(loc='upper left')

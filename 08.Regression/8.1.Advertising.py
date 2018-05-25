@@ -8,7 +8,6 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 
-
 if __name__ == "__main__":
     path = '8.Advertising.csv'
     # # 手写读取数据 - 请自行分析，在8.2.Iris代码中给出类似的例子
@@ -42,12 +41,12 @@ if __name__ == "__main__":
     # print p
 
     # pandas读入
-    data = pd.read_csv(path)    # TV、Radio、Newspaper、Sales
+    data = pd.read_csv(path)  # TV、Radio、Newspaper、Sales
     x = data[['TV', 'Radio', 'Newspaper']]
     # x = data[['TV', 'Radio']]
     y = data['Sales']
-    print x
-    print y
+    print(x)
+    print(y)
 
     # # 绘制1
     plt.plot(data['TV'], y, 'ro', label='TV')
@@ -78,14 +77,14 @@ if __name__ == "__main__":
     # print x_train, y_train
     linreg = LinearRegression()
     model = linreg.fit(x_train, y_train)
-    print model
-    print linreg.coef_
-    print linreg.intercept_
+    print(model)
+    print(linreg.coef_)
+    print(linreg.intercept_)
 
     y_hat = linreg.predict(np.array(x_test))
     mse = np.average((y_hat - np.array(y_test)) ** 2)  # Mean Squared Error
     rmse = np.sqrt(mse)  # Root Mean Squared Error
-    print mse, rmse
+    print(mse, rmse)
 
     t = np.arange(len(x_test))
     plt.plot(t, y_test, 'r-', linewidth=2, label='Test')

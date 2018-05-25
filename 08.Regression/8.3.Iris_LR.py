@@ -12,7 +12,7 @@ from sklearn.pipeline import Pipeline
 
 
 def iris_type(s):
-    it = {'Iris-setosa': 0, 'Iris-versicolor': 1, 'Iris-virginica': 2}
+    it = {b'Iris-setosa': 0, b'Iris-versicolor': 1, b'Iris-virginica': 2}
     return it[s]
 
 
@@ -56,15 +56,15 @@ if __name__ == "__main__":
     #
     # # 路径，浮点型数据，逗号分隔，第4列使用函数iris_type单独处理
     data = np.loadtxt(path, dtype=float, delimiter=',', converters={4: iris_type})
-    print data
+    print(data)
     # 将数据的0到3列组成x，第4列得到y
     x, y = np.split(data, (4,), axis=1)
 
     # 为了可视化，仅使用前两列特征
     x = x[:, :2]
     #
-    print x
-    print y
+    print(x)
+    print(y)
     #
     # x = StandardScaler().fit_transform(x)
     # lr = LogisticRegression()   # Logistic回归模型
@@ -72,17 +72,17 @@ if __name__ == "__main__":
     #
     # 等价形式
     lr = Pipeline([('sc', StandardScaler()),
-                        ('clf', LogisticRegression()) ])
+                   ('clf', LogisticRegression())])
     lr.fit(x, y.ravel())
 
     # 画图
-    N, M = 500, 500     # 横纵各采样多少个值
-    x1_min, x1_max = x[:, 0].min(), x[:, 0].max()   # 第0列的范围
-    x2_min, x2_max = x[:, 1].min(), x[:, 1].max()   # 第1列的范围
+    N, M = 500, 500  # 横纵各采样多少个值
+    x1_min, x1_max = x[:, 0].min(), x[:, 0].max()  # 第0列的范围
+    x2_min, x2_max = x[:, 1].min(), x[:, 1].max()  # 第1列的范围
     t1 = np.linspace(x1_min, x1_max, N)
     t2 = np.linspace(x2_min, x2_max, M)
-    x1, x2 = np.meshgrid(t1, t2)                    # 生成网格采样点
-    x_test = np.stack((x1.flat, x2.flat), axis=1)   # 测试点
+    x1, x2 = np.meshgrid(t1, t2)  # 生成网格采样点
+    x_test = np.stack((x1.flat, x2.flat), axis=1)  # 测试点
 
     # 无意义，只是为了凑另外两个维度
     # x3 = np.ones(x1.size) * np.average(x[:, 2])
@@ -91,10 +91,11 @@ if __name__ == "__main__":
 
     cm_light = mpl.colors.ListedColormap(['#77E0A0', '#FF8080', '#A0A0FF'])
     cm_dark = mpl.colors.ListedColormap(['g', 'r', 'b'])
-    y_hat = lr.predict(x_test)                  # 预测值
-    y_hat = y_hat.reshape(x1.shape)                 # 使之与输入的形状相同
-    plt.pcolormesh(x1, x2, y_hat, cmap=cm_light)     # 预测值的显示
-    plt.scatter(x[:, 0], x[:, 1], c=y, edgecolors='k', s=50, cmap=cm_dark)    # 样本的显示
+    y_hat = lr.predict(x_test)  # 预测值
+    y_hat = y_hat.reshape(x1.shape)  # 使之与输入的形状相同
+    plt.pcolormesh(x1, x2, y_hat, cmap=cm_light)  # 预测值的显示
+    # TODO ValueError: c of shape (150, 1) not acceptable as a color sequence for x with size 150, y with size 150
+    plt.scatter(x[:, 0], x[:, 1], c=y, edgecolors='k', s=50, cmap=cm_dark)  # 样本的显示
     plt.xlabel('petal length')
     plt.ylabel('petal width')
     plt.xlim(x1_min, x1_max)
@@ -107,7 +108,7 @@ if __name__ == "__main__":
     y_hat = lr.predict(x)
     y = y.reshape(-1)
     result = y_hat == y
-    print y_hat
-    print result
+    print(y_hat)
+    print(result)
     acc = np.mean(result)
-    print '准确度: %.2f%%' % (100 * acc)
+    print('准确度: %.2f%%' % (100 * acc))
