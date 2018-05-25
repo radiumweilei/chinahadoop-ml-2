@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 def triangle_wave(size, T):
     t = np.linspace(-1, 1, size, endpoint=False)
-    # where
+    # 如下两行也可以得到三角波
     # y = np.where(t < 0, -t, 0)
     # y = np.where(t >= 0, t, y)
     y = np.abs(t)
