@@ -27,7 +27,7 @@ def restore2(sigma, u, v, K):  # 奇异值、左特征向量、右特征向量
     m = len(u)
     n = len(v[0])
     a = np.zeros((m, n))
-    for k in range(K+1):
+    for k in range(K + 1):
         for i in range(m):
             a[i] += sigma[k] * u[i][k] * v[k]
     a[a < 0] = 0
@@ -45,11 +45,11 @@ if __name__ == "__main__":
     u_r, sigma_r, v_r = np.linalg.svd(a[:, :, 0])
     u_g, sigma_g, v_g = np.linalg.svd(a[:, :, 1])
     u_b, sigma_b, v_b = np.linalg.svd(a[:, :, 2])
-    plt.figure(figsize=(10,10), facecolor='w')
+    plt.figure(figsize=(10, 10), facecolor='w')
     mpl.rcParams['font.sans-serif'] = [u'simHei']
     mpl.rcParams['axes.unicode_minus'] = False
-    for k in range(1, K+1):
-        print k
+    for k in range(1, K + 1):
+        print(k)
         R = restore1(sigma_r, u_r, v_r, k)
         G = restore1(sigma_g, u_g, v_g, k)
         B = restore1(sigma_b, u_b, v_b, k)

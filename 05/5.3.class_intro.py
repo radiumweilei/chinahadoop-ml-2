@@ -12,7 +12,7 @@ class People:
 
     def print_people(self):
         str = u'%s的年龄：%d，成绩为：%.2f' % (self.name, self.age, self.__score)
-        print str
+        print(str)
 
     __print_people = print_people
 
@@ -24,7 +24,7 @@ class Student(People):
 
     def print_people(self):
         str = u'%s的年龄：%d' % (self.name, self.age)
-        print str
+        print(str)
 
 
 def func(p):
@@ -33,7 +33,7 @@ def func(p):
 
 if __name__ == '__main__':
     p = People('Tom', 10, 3.14159)
-    func(p)     # p传入的是引用类型
+    func(p)  # p传入的是引用类型
     p.print_people()
     print
 
