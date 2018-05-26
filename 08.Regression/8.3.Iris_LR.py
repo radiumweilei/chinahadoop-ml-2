@@ -49,7 +49,7 @@ if __name__ == "__main__":
     # print 'x = \n', x
     # print 'y = \n', y
     # le = preprocessing.LabelEncoder()
-    # le.fit(['Iris-setosa', 'Iris-versicolor', 'Iris-virginica'])
+    # le.fit(['Iris-setosa', 'Iris-versicolor', 'Iris-virginica'])  # pd 提供的预编码
     # print le.classes_
     # y = le.transform(y)
     # print 'Last Version, y = \n', y
@@ -58,7 +58,7 @@ if __name__ == "__main__":
     data = np.loadtxt(path, dtype=float, delimiter=',', converters={4: iris_type})
     print(data)
     # 将数据的0到3列组成x，第4列得到y
-    x, y = np.split(data, (4,), axis=1)
+    x, y = np.split(data, (4,), axis=1)  # （4,) 前3列, 第4列往后;  axis=0 行序, axis=1 列序
 
     # 为了可视化，仅使用前两列特征
     x = x[:, :2]
@@ -71,9 +71,9 @@ if __name__ == "__main__":
     #     lr.fit(x, y.ravel())        # 根据数据[x,y]，计算回归参数
     #
     # 等价形式
-    lr = Pipeline([('sc', StandardScaler()),
+    lr = Pipeline([('sc', StandardScaler()),  # 标准化
                    ('clf', LogisticRegression())])
-    lr.fit(x, y.ravel())
+    lr.fit(x, y.ravel())  # y.ravel() y列变成行
 
     # 画图
     N, M = 500, 500  # 横纵各采样多少个值
@@ -94,8 +94,7 @@ if __name__ == "__main__":
     y_hat = lr.predict(x_test)  # 预测值
     y_hat = y_hat.reshape(x1.shape)  # 使之与输入的形状相同
     plt.pcolormesh(x1, x2, y_hat, cmap=cm_light)  # 预测值的显示
-    # TODO ValueError: c of shape (150, 1) not acceptable as a color sequence for x with size 150, y with size 150
-    plt.scatter(x[:, 0], x[:, 1], c=y, edgecolors='k', s=50, cmap=cm_dark)  # 样本的显示
+    plt.scatter(x[:, 0], x[:, 1], c=np.squeeze(y), edgecolors='k', s=50, cmap=cm_dark)  # 样本的显示
     plt.xlabel('petal length')
     plt.ylabel('petal width')
     plt.xlim(x1_min, x1_max)

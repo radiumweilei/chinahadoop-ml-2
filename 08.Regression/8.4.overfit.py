@@ -9,12 +9,27 @@ from sklearn.pipeline import Pipeline
 import matplotlib as mpl
 
 
+def xss(y, y_hat):
+    y = y.ravel()
+    y_hat = y_hat.ravel()
+    # version 1
+    # tss = ((y - np.average(y)) ** 2).sum()
+    # rss = ((y_hat - y) ** 2).sum()
+    # r2 = 1 - rss / tss
+    # version 2
+    tss = np.var(y)  # 伪方差, 相当于 除以m
+    rss = np.average(y_hat - y) ** 2 # 相当于除以m
+    r2 = 1 - rss / tss
+    corr_coef = np.corrcoef(y, y_hat)[0, 1]
+    return r2, corr_coef
+
+
 if __name__ == "__main__":
     np.random.seed(0)
     N = 9
     x = np.linspace(0, 6, N) + np.random.randn(N)
     x = np.sort(x)
-    y = x**2 - 4*x - 3 + np.random.randn(N)
+    y = x ** 2 - 4 * x - 3 + np.random.randn(N)
     x.shape = -1, 1
     y.shape = -1, 1
 
@@ -23,7 +38,7 @@ if __name__ == "__main__":
         ('linear', LinearRegression(fit_intercept=False))])
     model_2 = Pipeline([
         ('poly', PolynomialFeatures()),
-        ('linear', RidgeCV(alphas=np.logspace(-3, 2, 100), fit_intercept=False))])
+        ('linear', RidgeCV(alphas=np.logspace(-3, 2, 100), fit_intercept=False))])  # 改成LASSO试试
     models = model_1, model_2
     mpl.rcParams['font.sans-serif'] = [u'simHei']
     mpl.rcParams['axes.unicode_minus'] = False
@@ -39,7 +54,7 @@ if __name__ == "__main__":
     titles = u'线性回归', u'Ridge回归'
     for t in range(2):
         model = models[t]
-        plt.subplot(2, 1, t+1)
+        plt.subplot(2, 1, t + 1)
         plt.plot(x, y, 'ro', ms=10, zorder=N)
         for i, d in enumerate(d_pool):
             model.set_params(poly__degree=d)
@@ -53,6 +68,9 @@ if __name__ == "__main__":
             x_hat.shape = -1, 1
             y_hat = model.predict(x_hat)
             s = model.score(x, y)
+            # r2 , corr_coef = xss(y, model.predict(x))
+            # print('R2和相关系数: ', r2,corr_coef)
+            # print('R2: ', s, '\n')
             print(s, '\n')
             zorder = N - 1 if (d == 2) else 0
             plt.plot(x_hat, y_hat, color=clrs[i], lw=line_width[i], label=(u'%d阶，score=%.3f' % (d, s)), zorder=zorder)

@@ -43,7 +43,7 @@ if __name__ == "__main__":
     # pandas读入
     data = pd.read_csv(path)  # TV、Radio、Newspaper、Sales
     x = data[['TV', 'Radio', 'Newspaper']]
-    # x = data[['TV', 'Radio']]
+    # x = data[['TV', 'Radio']]  # 通过观察各自的分布，把newspaper抹掉，效果更好
     y = data['Sales']
     print(x)
     print(y)
@@ -55,35 +55,35 @@ if __name__ == "__main__":
     plt.legend(loc='lower right')
     plt.grid()
     plt.show()
-    # #
-    # # 绘制2
-    # plt.figure(figsize=(9,12))
-    # plt.subplot(311)
-    # plt.plot(data['TV'], y, 'ro')
-    # plt.title('TV')
-    # plt.grid()
-    # plt.subplot(312)
-    # plt.plot(data['Radio'], y, 'g^')
-    # plt.title('Radio')
-    # plt.grid()
-    # plt.subplot(313)
-    # plt.plot(data['Newspaper'], y, 'b*')
-    # plt.title('Newspaper')
-    # plt.grid()
-    # plt.tight_layout()
-    # plt.show()
 
-    x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=1)
+    # # 绘制2
+    plt.figure(figsize=(9, 12))
+    plt.subplot(311)
+    plt.plot(data['TV'], y, 'ro')
+    plt.title('TV')
+    plt.grid()
+    plt.subplot(312)
+    plt.plot(data['Radio'], y, 'g^')
+    plt.title('Radio')
+    plt.grid()
+    plt.subplot(313)
+    plt.plot(data['Newspaper'], y, 'b*')
+    plt.title('Newspaper')
+    plt.grid()
+    plt.tight_layout()
+    plt.show()
+
+    x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=1)  # random_state 确保每次返回的样本都一样, 测试阶段用
     # print x_train, y_train
     linreg = LinearRegression()
     model = linreg.fit(x_train, y_train)
     print(model)
-    print(linreg.coef_)
-    print(linreg.intercept_)
+    print(linreg.coef_)  # 系统
+    print(linreg.intercept_)  # 截距
 
-    y_hat = linreg.predict(np.array(x_test))
-    mse = np.average((y_hat - np.array(y_test)) ** 2)  # Mean Squared Error
-    rmse = np.sqrt(mse)  # Root Mean Squared Error
+    y_hat = linreg.predict(np.array(x_test))  # y_hat 预测值, y_test 实际值
+    mse = np.average((y_hat - np.array(y_test)) ** 2)  # Mean Squared Error 均方误差
+    rmse = np.sqrt(mse)  # Root Mean Squared Error 均方误差开方
     print(mse, rmse)
 
     t = np.arange(len(x_test))

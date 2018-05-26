@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import Lasso, Ridge
+from sklearn.linear_model import Lasso, Ridge, ElasticNet
 from sklearn.model_selection import GridSearchCV
 
 if __name__ == "__main__":
@@ -22,12 +22,13 @@ if __name__ == "__main__":
     model = Lasso()
     # model = Ridge()
 
-    alpha_can = np.logspace(-3, 2, 10)
-    lasso_model = GridSearchCV(model, param_grid={'alpha': alpha_can}, cv=5)
+    alpha_can = np.logspace(-3, 2, 10)  # 多个alpha 用于交叉验证
+    lasso_model = GridSearchCV(model, param_grid={'alpha': alpha_can}, cv=5)  # cv=5 5折交叉验证, 即分成5分
     lasso_model.fit(x, y)
-    print('验证参数：\n', lasso_model.best_params_)
+    print('验证参数：\n', lasso_model.best_params_)  # 找出最佳模型参数
 
     y_hat = lasso_model.predict(np.array(x_test))
+    print(lasso_model.score(x_test, y_test))
     mse = np.average((y_hat - np.array(y_test)) ** 2)  # Mean Squared Error
     rmse = np.sqrt(mse)  # Root Mean Squared Error
     print(mse, rmse)
