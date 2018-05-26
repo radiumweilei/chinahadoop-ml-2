@@ -8,8 +8,9 @@ from sklearn.tree import DecisionTreeClassifier
 
 
 def iris_type(s):
-    it = {'Iris-setosa': 0, 'Iris-versicolor': 1, 'Iris-virginica': 2}
+    it = {b'Iris-setosa': 0, b'Iris-versicolor': 1, b'Iris-virginica': 2}
     return it[s]
+
 
 # 'sepal length', 'sepal width', 'petal length', 'petal width'
 iris_feature = u'花萼长度', u'花萼宽度', u'花瓣长度', u'花瓣宽度'
@@ -18,7 +19,7 @@ if __name__ == "__main__":
     mpl.rcParams['font.sans-serif'] = [u'SimHei']  # 黑体 FangSong/KaiTi
     mpl.rcParams['axes.unicode_minus'] = False
 
-    path = '..\\8.Regression\\8.iris.data'  # 数据文件路径
+    path = '../08.Regression/8.iris.data'  # 数据文件路径
     data = np.loadtxt(path, dtype=float, delimiter=',', converters={4: iris_type})
     x_prime, y = np.split(data, (4,), axis=1)
 
@@ -44,17 +45,17 @@ if __name__ == "__main__":
         # 训练集上的预测结果
         y_hat = dt_clf.predict(x)
         y = y.reshape(-1)
-        c = np.count_nonzero(y_hat == y)    # 统计预测正确的个数
-        print '特征：  ', iris_feature[pair[0]], ' + ', iris_feature[pair[1]],
-        print '\t预测正确数目：', c,
-        print '\t准确率: %.2f%%' % (100 * float(c) / float(len(y)))
+        c = np.count_nonzero(y_hat == y)  # 统计预测正确的个数
+        print('特征：  ', iris_feature[pair[0]], ' + ', iris_feature[pair[1]], )
+        print('\t预测正确数目：', c, )
+        print('\t准确率: %.2f%%' % (100 * float(c) / float(len(y))))
 
         # 显示
         cm_light = mpl.colors.ListedColormap(['#A0FFA0', '#FFA0A0', '#A0A0FF'])
         cm_dark = mpl.colors.ListedColormap(['g', 'r', 'b'])
         y_hat = dt_clf.predict(x_test)  # 预测值
         y_hat = y_hat.reshape(x1.shape)  # 使之与输入的形状相同
-        plt.subplot(2, 3, i+1)
+        plt.subplot(2, 3, i + 1)
         plt.pcolormesh(x1, x2, y_hat, cmap=cm_light)  # 预测值
         plt.scatter(x[:, 0], x[:, 1], c=y, edgecolors='k', cmap=cm_dark)  # 样本
         plt.xlabel(iris_feature[pair[0]], fontsize=14)
