@@ -20,7 +20,8 @@ if __name__ == "__main__":
     data_train = xgb.DMatrix(x_train, label=y_train)
     data_test = xgb.DMatrix(x_test, label=y_test)
     watch_list = [(data_test, 'eval'), (data_train, 'train')]
-    param = {'max_depth': 3, 'eta': 1, 'silent': 1, 'objective': 'multi:softmax', 'num_class': 3}
+    # 按理说 eta 越小越能防止过拟合
+    param = {'max_depth': 3, 'eta': 1, 'silent': 1, 'objective': 'multi:softmax', 'num_class': 3}  # 多分类
 
     bst = xgb.train(param, data_train, num_boost_round=6, evals=watch_list)
     y_hat = bst.predict(data_test)

@@ -21,14 +21,14 @@ if __name__ == "__main__":
     x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=1, test_size=0.5)
 
     # Logistic回归
-    lr = LogisticRegression(penalty='l2')
+    lr = LogisticRegression(penalty='l2')  # L2正则即岭回归 Ridge
     lr.fit(x_train, y_train.ravel())
     y_hat = lr.predict(x_test)
     show_accuracy(y_hat, y_test, 'Logistic回归 ')
 
     # XGBoost
-    y_train[y_train == 3] = 0
-    y_test[y_test == 3] = 0
+    y_train[y_train == 3] = 0  # 标记为3的改为0, XGBoost 从0开始编号
+    y_test[y_test == 3] = 0  # 标记为3的改为0, XGBoost 从0开始编号
     data_train = xgb.DMatrix(x_train, label=y_train)
     data_test = xgb.DMatrix(x_test, label=y_test)
     watch_list = [(data_test, 'eval'), (data_train, 'train')]

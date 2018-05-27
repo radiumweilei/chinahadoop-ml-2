@@ -24,7 +24,7 @@ def read_data(path):
             col.append(int(key))
             values.append(float(value))
         r += 1
-    x = scipy.sparse.csr_matrix((values, (row, col))).toarray()
+    x = scipy.sparse.csr_matrix((values, (row, col))).toarray()  # 构造稠密矩阵
     y = np.array(y)
     return x, y
 

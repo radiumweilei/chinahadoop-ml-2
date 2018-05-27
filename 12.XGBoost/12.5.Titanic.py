@@ -20,12 +20,14 @@ def show_accuracy(a, b, tip):
 
 def load_data(file_name, is_train):
     data = pd.read_csv(file_name)  # 数据文件路径
-    # print data.describe()
+    # print('data.describe()\n', data.describe())
+    # print('data.head()\n', data.head())
 
     # 性别
     data['Sex'] = data['Sex'].map({'female': 0, 'male': 1}).astype(int)
+    # print('data.head()\n', data.head())
 
-    # 补齐船票价格缺失值
+    # 补齐船票价格缺失值, 根据pclass 计算各自的中位数, 用中位数替代空值
     if len(data.Fare[data.Fare.isnull()]) > 0:
         fare = np.zeros(3)
         for f in range(0, 3):
