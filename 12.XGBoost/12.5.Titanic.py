@@ -38,9 +38,9 @@ def load_data(file_name, is_train):
     # data.loc[(data.Age.isnull()), 'Age'] = mean_age
     if is_train:
         # 年龄：使用随机森林预测年龄缺失值
-        print '随机森林预测缺失年龄：--start--'
+        print('随机森林预测缺失年龄：--start--')
         data_for_age = data[['Age', 'Survived', 'Fare', 'Parch', 'SibSp', 'Pclass']]
-        age_exist = data_for_age.loc[(data.Age.notnull())]   # 年龄不缺失的数据
+        age_exist = data_for_age.loc[(data.Age.notnull())]  # 年龄不缺失的数据
         age_null = data_for_age.loc[(data.Age.isnull())]
         # print age_exist
         x = age_exist.values[:, 1:]
@@ -50,9 +50,9 @@ def load_data(file_name, is_train):
         age_hat = rfr.predict(age_null.values[:, 1:])
         # print age_hat
         data.loc[(data.Age.isnull()), 'Age'] = age_hat
-        print '随机森林预测缺失年龄：--over--'
+        print('随机森林预测缺失年龄：--over--')
     else:
-        print '随机森林预测缺失年龄2：--start--'
+        print('随机森林预测缺失年龄2：--start--')
         data_for_age = data[['Age', 'Fare', 'Parch', 'SibSp', 'Pclass']]
         age_exist = data_for_age.loc[(data.Age.notnull())]  # 年龄不缺失的数据
         age_null = data_for_age.loc[(data.Age.isnull())]
@@ -64,7 +64,7 @@ def load_data(file_name, is_train):
         age_hat = rfr.predict(age_null.values[:, 1:])
         # print age_hat
         data.loc[(data.Age.isnull()), 'Age'] = age_hat
-        print '随机森林预测缺失年龄2：--over--'
+        print('随机森林预测缺失年龄2：--over--')
 
     # 起始城市
     data.loc[(data.Embarked.isnull()), 'Embarked'] = 'S'  # 保留缺失出发城市
@@ -75,7 +75,7 @@ def load_data(file_name, is_train):
     # embarked_data = embarked_data.rename(columns={'S': 'Southampton', 'C': 'Cherbourg', 'Q': 'Queenstown', 'U': 'UnknownCity'})
     embarked_data = embarked_data.rename(columns=lambda x: 'Embarked_' + str(x))
     data = pd.concat([data, embarked_data], axis=1)
-    print data.describe()
+    print(data.describe())
     data.to_csv('New_Data.csv')
 
     x = data[['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked_C', 'Embarked_Q', 'Embarked_S']]
@@ -89,7 +89,7 @@ def load_data(file_name, is_train):
 
     # 思考：这样做，其实发生了什么？
     x = np.tile(x, (5, 1))
-    y = np.tile(y, (5, ))
+    y = np.tile(y, (5,))
     if is_train:
         return x, y
     return x, data['PassengerId']
@@ -133,7 +133,7 @@ if __name__ == "__main__":
     data_test = xgb.DMatrix(x_test, label=y_test)
     watch_list = [(data_test, 'eval'), (data_train, 'train')]
     param = {'max_depth': 3, 'eta': 0.1, 'silent': 1, 'objective': 'binary:logistic'}
-             # 'subsample': 1, 'alpha': 0, 'lambda': 0, 'min_child_weight': 1}
+    # 'subsample': 1, 'alpha': 0, 'lambda': 0, 'min_child_weight': 1}
     bst = xgb.train(param, data_train, num_boost_round=100, evals=watch_list)
     y_hat = bst.predict(data_test)
     # write_result(bst, 3)
@@ -141,6 +141,6 @@ if __name__ == "__main__":
     y_hat[~(y_hat > 0.5)] = 0
     xgb_rate = show_accuracy(y_hat, y_test, 'XGBoost ')
 
-    print 'Logistic回归：%.3f%%' % lr_rate
-    print '随机森林：%.3f%%' % rfc_rate
-    print 'XGBoost：%.3f%%' % xgb_rate
+    print('Logistic回归：%.3f%%' % lr_rate)
+    print('随机森林：%.3f%%' % rfc_rate)
+    print('XGBoost：%.3f%%' % xgb_rate)
