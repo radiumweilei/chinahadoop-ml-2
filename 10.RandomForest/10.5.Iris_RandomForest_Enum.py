@@ -24,13 +24,13 @@ if __name__ == "__main__":
     x_prime, y = np.split(data, (4,), axis=1)
 
     feature_pairs = [[0, 1], [0, 2], [0, 3], [1, 2], [1, 3], [2, 3]]
-    plt.figure(figsize=(10, 9), facecolor='#FFFFFF')
+    plt.figure(figsize=(10, 9), facecolor='#FFFFFF')  # 宽度10英寸, 高度10英寸的图
     for i, pair in enumerate(feature_pairs):
         # 准备数据
         x = x_prime[:, pair]
 
         # 随机森林
-        clf = RandomForestClassifier(n_estimators=200, criterion='entropy', max_depth=4)
+        clf = RandomForestClassifier(n_estimators=200, criterion='entropy', max_depth=4)  # 200颗树
         rf_clf = clf.fit(x, y.ravel())
 
         # 画图
@@ -46,9 +46,8 @@ if __name__ == "__main__":
         y_hat = rf_clf.predict(x)
         y = y.reshape(-1)
         c = np.count_nonzero(y_hat == y)  # 统计预测正确的个数
-        print('特征：  ', iris_feature[pair[0]], ' + ', iris_feature[pair[1]], )
-        print('\t预测正确数目：', c, )
-        print('\t准确率: %.2f%%' % (100 * float(c) / float(len(y))))
+        print('特征：  ', iris_feature[pair[0]], ' + ', iris_feature[pair[1]], '\t预测正确数目：', c,
+              '\t准确率: %.2f%%' % (100 * float(c) / float(len(y))))
 
         # 显示
         cm_light = mpl.colors.ListedColormap(['#A0FFA0', '#FFA0A0', '#A0A0FF'])
@@ -62,8 +61,9 @@ if __name__ == "__main__":
         plt.ylabel(iris_feature[pair[1]], fontsize=14)
         plt.xlim(x1_min, x1_max)
         plt.ylim(x2_min, x2_max)
+        plt.title(u'分类：' + iris_feature[pair[0]] + "-" + iris_feature[pair[1]])
         plt.grid()
     plt.tight_layout(2.5)
-    plt.subplots_adjust(top=0.92)
+    plt.subplots_adjust(top=0.92)  # 给父标题留出位置，（有bug，修正多个标题）
     plt.suptitle(u'随机森林对鸢尾花数据的两特征组合的分类结果', fontsize=18)
     plt.show()

@@ -9,16 +9,16 @@ if __name__ == "__main__":
     N = 100
     x = np.random.rand(N) * 6 - 3  # [-3,3)
     x.sort()
-    y = np.sin(x) + np.random.randn(N) * 0.05
+    y = np.sin(x) + np.random.randn(N) * 0.05  # 后一项是噪声
     print(y)
     x = x.reshape(-1, 1)  # 转置后，得到N个样本，每个样本都是1维的
     print(x)
 
-    reg = DecisionTreeRegressor(criterion='mse', max_depth=9)
+    reg = DecisionTreeRegressor(criterion='mse', max_depth=9)  # 决策树回归，均方误差作为准则进行分类
     dt = reg.fit(x, y)
     x_test = np.linspace(-3, 3, 50).reshape(-1, 1)
     y_hat = dt.predict(x_test)
-    plt.plot(x, y, 'r*', linewidth=2, label='Actual')
+    plt.plot(x, y, 'r*', label='Actual')
     plt.plot(x_test, y_hat, 'g-', linewidth=2, label='Predict')
     plt.legend(loc='upper left')
     plt.grid()

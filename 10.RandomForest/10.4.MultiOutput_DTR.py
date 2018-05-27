@@ -5,16 +5,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.tree import DecisionTreeRegressor
 
+# 多输出(y是多列)的决策树回归
 if __name__ == "__main__":
     N = 300
     x = np.random.rand(N) * 8 - 4  # [-4,4)
     x.sort()
-    y1 = np.sin(x) + 3 + np.random.randn(N) * 0.1
-    y2 = np.cos(0.3 * x) + np.random.randn(N) * 0.01
-    # y1 = np.sin(x) + np.random.randn(N) * 0.05
-    # y2 = np.cos(x) + np.random.randn(N) * 0.1
+    # y1 = np.sin(x) + 3 + np.random.randn(N) * 0.1
+    # y2 = np.cos(0.3 * x) + np.random.randn(N) * 0.01
+    y1 = np.sin(x) + np.random.randn(N) * 0.05
+    y2 = np.cos(x) + np.random.randn(N) * 0.1
+    # y1 = 16 * np.sin(x) ** 3 + np.random.randn(N)
+    # y2 = 13 * np.cos(x) - 5 * np.cos(2 * x) - 2 * np.cos(3 * x) - np.cos(4 * x) + np.random.randn(N) * 0.1
     y = np.vstack((y1, y2))
-    y = np.vstack((y1, y2)).T
+    y = np.vstack((y1, y2)).T  # .T 转置
     x = x.reshape(-1, 1)  # 转置后，得到N个样本，每个样本都是1维的
 
     deep = 3

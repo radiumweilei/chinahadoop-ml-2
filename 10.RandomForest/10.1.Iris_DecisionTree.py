@@ -36,17 +36,25 @@ if __name__ == "__main__":
     # 决策树参数估计
     # min_samples_split = 10：如果该结点包含的样本数目大于10，则(有可能)对其分支
     # min_samples_leaf = 10：若将某结点分支后，得到的每个子结点样本数目都大于10，则完成分支；否则，不进行分支
-    model = Pipeline([
+    model = Pipeline([  # 强烈推荐使用管道，不用管道则需要分步做
         ('ss', StandardScaler()),
-        ('DTC', DecisionTreeClassifier(criterion='entropy', max_depth=3))])
+        ('DTC', DecisionTreeClassifier(criterion='entropy', max_depth=3))])  # 用熵做标准, 构建决策树分类器
     # clf = DecisionTreeClassifier(criterion='entropy', max_depth=3)
     model = model.fit(x_train, y_train)
     y_test_hat = model.predict(x_test)  # 测试数据
+
+    # 不用管道的做法
+    # ss = StandardScaler()
+    # x = ss.fit_transform(x)
+    # model = DecisionTreeClassifier(criterion='entropy', max_depth=3)
+    # model.fit(x_train, y_train)
 
     # 保存
     # dot -Tpng -o 1.png 1.dot
     f = open('./iris_tree.dot', 'w')
     tree.export_graphviz(model.get_params('DTC')['DTC'], out_file=f)
+    # tree.export_graphviz(model, out_file=f)  # 不用管道的做法
+    f.close()
 
     # 画图
     N, M = 100, 100  # 横纵各采样多少个值
@@ -54,8 +62,8 @@ if __name__ == "__main__":
     x2_min, x2_max = x[:, 1].min(), x[:, 1].max()  # 第1列的范围
     t1 = np.linspace(x1_min, x1_max, N)
     t2 = np.linspace(x2_min, x2_max, M)
-    x1, x2 = np.meshgrid(t1, t2)  # 生成网格采样点
-    x_show = np.stack((x1.flat, x2.flat), axis=1)  # 测试点
+    x1, x2 = np.meshgrid(t1, t2)  # 生成网格采样点,  记得debug看看该函数的行为，改N,M=5,5后再debug
+    x_show = np.stack((x1.flat, x2.flat), axis=1)  # 测试点,  记得debug看看该函数的行为，改N,M=5,5后再debug
 
     # # 无意义，只是为了凑另外两个维度
     # # 打开该注释前，确保注释掉x = x[:, :2]
@@ -67,8 +75,9 @@ if __name__ == "__main__":
     cm_dark = mpl.colors.ListedColormap(['g', 'r', 'b'])
     y_show_hat = model.predict(x_show)  # 预测值
     y_show_hat = y_show_hat.reshape(x1.shape)  # 使之与输入的形状相同
-    plt.figure(facecolor='w')
-    plt.pcolormesh(x1, x2, y_show_hat, cmap=cm_light)  # 预测值的显示
+    plt.figure(facecolor='w')  # 背景色设为白色，默认是灰色
+    plt.pcolormesh(x1, x2, y_show_hat, cmap=cm_light)  # 预测值的显示，背景块
+    # ravel返回一行
     plt.scatter(x_test[:, 0], x_test[:, 1], c=y_test.ravel(), edgecolors='k', s=100, cmap=cm_dark, marker='o')  # 测试数据
     plt.scatter(x[:, 0], x[:, 1], c=y.ravel(), edgecolors='k', s=40, cmap=cm_dark)  # 全部数据
     plt.xlabel(iris_feature[0], fontsize=15)
@@ -97,7 +106,7 @@ if __name__ == "__main__":
         result = (y_test_hat == y_test)  # True则预测正确，False则预测错误
         err = 1 - np.mean(result)
         err_list.append(err)
-        print(d, ' 准确度: %.2f%%' % (100 * err))
+        print(d, ' 错误率: %.2f%%' % (100 * err))
     plt.figure(facecolor='w')
     plt.plot(depth, err_list, 'ro-', lw=2)
     plt.xlabel(u'决策树深度', fontsize=15)

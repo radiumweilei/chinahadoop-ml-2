@@ -30,7 +30,7 @@ if __name__ == "__main__":
         x = x_prime[:, pair]
 
         # 决策树学习
-        clf = DecisionTreeClassifier(criterion='entropy', min_samples_leaf=3)
+        clf = DecisionTreeClassifier(criterion='entropy', min_samples_leaf=3)  # 预剪辑, 叶节点数少于3就不再分
         dt_clf = clf.fit(x, y)
 
         # 画图
@@ -46,9 +46,8 @@ if __name__ == "__main__":
         y_hat = dt_clf.predict(x)
         y = y.reshape(-1)
         c = np.count_nonzero(y_hat == y)  # 统计预测正确的个数
-        print('特征：  ', iris_feature[pair[0]], ' + ', iris_feature[pair[1]], )
-        print('\t预测正确数目：', c, )
-        print('\t准确率: %.2f%%' % (100 * float(c) / float(len(y))))
+        print('特征：  ', iris_feature[pair[0]], ' + ', iris_feature[pair[1]], '\t预测正确数目：', c,
+              '\t准确率: %.2f%%' % (100 * float(c) / float(len(y))))
 
         # 显示
         cm_light = mpl.colors.ListedColormap(['#A0FFA0', '#FFA0A0', '#A0A0FF'])
