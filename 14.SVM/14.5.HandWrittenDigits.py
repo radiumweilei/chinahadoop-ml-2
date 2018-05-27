@@ -11,7 +11,7 @@ import os
 
 def show_accuracy(a, b, tip):
     acc = a.ravel() == b.ravel()
-    print tip + '正确率：%.2f%%' % (100*np.mean(acc))
+    print(tip + '正确率：%.2f%%' % (100 * np.mean(acc)))
 
 
 def save_image(im, i):
@@ -25,18 +25,18 @@ def save_image(im, i):
 
 
 if __name__ == "__main__":
-    print 'Load Training File Start...'
+    print('Load Training File Start...')
     data = np.loadtxt('14.optdigits.tra', dtype=np.float, delimiter=',')
-    x, y = np.split(data, (-1, ), axis=1)
+    x, y = np.split(data, (-1,), axis=1)
     images = x.reshape(-1, 8, 8)
     y = y.ravel().astype(np.int)
 
-    print 'Load Test Data Start...'
+    print('Load Test Data Start...')
     data = np.loadtxt('14.optdigits.tes', dtype=np.float, delimiter=',')
-    x_test, y_test = np.split(data, (-1, ), axis=1)
+    x_test, y_test = np.split(data, (-1,), axis=1)
     images_test = x_test.reshape(-1, 8, 8)
     y_test = y_test.ravel().astype(np.int)
-    print 'Load Data OK...'
+    print('Load Data OK...')
 
     # x, x_test, y, y_test = train_test_split(x, y, random_state=1)
     # images = x.reshape(-1, 8, 8)
@@ -57,22 +57,22 @@ if __name__ == "__main__":
     plt.tight_layout()
     plt.show()
 
-    clf = svm.SVC(C=1, kernel='rbf', gamma=0.001)   # ~ kNN
-    print 'Start Learning...'
+    clf = svm.SVC(C=1, kernel='rbf', gamma=0.001)  # ~ kNN
+    print('Start Learning...')
     clf.fit(x, y)
-    print 'Learning is OK...'
+    print('Learning is OK...')
     y_hat = clf.predict(x)
     show_accuracy(y, y_hat, '训练集')
     y_hat = clf.predict(x_test)
-    print y_hat
-    print y_test
+    print(y_hat)
+    print(y_test)
     show_accuracy(y_test, y_hat, '测试集')
 
     err_images = images_test[y_test != y_hat]
     err_y_hat = y_hat[y_test != y_hat]
     err_y = y_test[y_test != y_hat]
-    print err_y_hat
-    print err_y
+    print(err_y_hat)
+    print(err_y)
     plt.figure(figsize=(10, 8), facecolor='w')
     for index, image in enumerate(err_images):
         if index >= 12:
