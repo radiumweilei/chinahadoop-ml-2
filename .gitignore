@@ -63,3 +63,4 @@ target/
 *.png
 10.RandomForest/iris_tree.dot
 12.XGBoost/New_Data.csv
+14.SVM/HandWritten

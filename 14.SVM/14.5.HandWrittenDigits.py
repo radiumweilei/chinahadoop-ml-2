@@ -18,10 +18,10 @@ def save_image(im, i):
     im *= 15.9375
     im = 255 - im
     a = im.astype(np.uint8)
-    output_path = '.\\HandWritten'
+    output_path = './HandWritten'
     if not os.path.exists(output_path):
         os.mkdir(output_path)
-    Image.fromarray(a).save(output_path + ('\\%d.png' % i))
+    Image.fromarray(a).save(output_path + ('/%d.png' % i))
 
 
 if __name__ == "__main__":
@@ -45,11 +45,11 @@ if __name__ == "__main__":
     matplotlib.rcParams['font.sans-serif'] = [u'SimHei']
     matplotlib.rcParams['axes.unicode_minus'] = False
     plt.figure(figsize=(15, 9), facecolor='w')
-    for index, image in enumerate(images[:16]):
+    for index, image in enumerate(images[:16]):  # 显示前16个训练图像
         plt.subplot(4, 8, index + 1)
-        plt.imshow(image, cmap=plt.cm.gray_r, interpolation='nearest')
+        plt.imshow(image, cmap=plt.cm.gray_r, interpolation='nearest')  # gray_r 灰度图 值倒转
         plt.title(u'训练图片: %i' % y[index])
-    for index, image in enumerate(images_test[:16]):
+    for index, image in enumerate(images_test[:16]):  # 显示前16个测试图像
         plt.subplot(4, 8, index + 17)
         plt.imshow(image, cmap=plt.cm.gray_r, interpolation='nearest')
         save_image(image.copy(), index)
