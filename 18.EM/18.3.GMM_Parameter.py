@@ -13,12 +13,12 @@ mpl.rcParams['axes.unicode_minus'] = False
 
 def expand(a, b, rate=0.05):
     d = (b - a) * rate
-    return a-d, b+d
+    return a - d, b + d
 
 
 def accuracy_rate(y1, y2):
     acc = np.mean(y1 == y2)
-    return acc if acc > 0.5 else 1-acc
+    return acc if acc > 0.5 else 1 - acc
 
 
 if __name__ == '__main__':
@@ -32,7 +32,7 @@ if __name__ == '__main__':
     x1 = x1.dot(m)
     x2 = np.random.multivariate_normal(mean=(-1, 10), cov=cov1, size=N2)
     x = np.vstack((x1, x2))
-    y = np.array([0]*N1 + [1]*N2)
+    y = np.array([0] * N1 + [1] * N2)
 
     types = ('spherical', 'diag', 'tied', 'full')
     err = np.empty(len(types))
@@ -42,11 +42,11 @@ if __name__ == '__main__':
         gmm.fit(x)
         err[i] = 1 - accuracy_rate(gmm.predict(x), y)
         bic[i] = gmm.bic(x)
-    print '错误率：', err.ravel()
-    print 'BIC：', bic.ravel()
+    print('错误率：', err.ravel())
+    print('BIC：', bic.ravel())
     xpos = np.arange(4)
     ax = plt.axes()
-    b1 = ax.bar(xpos-0.3, err, width=0.3, color='#77E0A0')
+    b1 = ax.bar(xpos - 0.3, err, width=0.3, color='#77E0A0')
     b2 = ax.twinx().bar(xpos, bic, width=0.3, color='#FF8080')
     plt.grid(True)
     bic_min, bic_max = expand(bic.min(), bic.max())
@@ -59,8 +59,8 @@ if __name__ == '__main__':
     optimal = bic.argmin()
     gmm = GaussianMixture(n_components=2, covariance_type=types[optimal], random_state=0)
     gmm.fit(x)
-    print '均值 = \n', gmm.means_
-    print '方差 = \n', gmm.covariances_
+    print('均值 = \n', gmm.means_)
+    print('方差 = \n', gmm.covariances_)
     y_hat = gmm.predict(x)
 
     cm_light = mpl.colors.ListedColormap(['#FF8080', '#77E0A0'])

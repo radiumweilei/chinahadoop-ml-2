@@ -13,7 +13,7 @@ import warnings
 
 def expand(a, b, rate=0.05):
     d = (b - a) * rate
-    return a-d, b+d
+    return a - d, b + d
 
 
 if __name__ == '__main__':
@@ -28,14 +28,14 @@ if __name__ == '__main__':
     x1 = x1.dot(m)
     x2 = np.random.multivariate_normal(mean=(-1, 10), cov=cov1, size=N2)
     x = np.vstack((x1, x2))
-    y = np.array([0]*N1 + [1]*N2)
+    y = np.array([0] * N1 + [1] * N2)
 
     gmm = GaussianMixture(n_components=2, covariance_type='full', random_state=0)
     gmm.fit(x)
     centers = gmm.means_
     covs = gmm.covariances_
-    print 'GMM均值 = \n', centers
-    print 'GMM方差 = \n', covs
+    print('GMM均值 = \n', centers)
+    print('GMM方差 = \n', covs)
     y_hat = gmm.predict(x)
 
     colors = '#A0FFA0', '#FF8080',
@@ -47,7 +47,7 @@ if __name__ == '__main__':
     x2_min, x2_max = expand(x2_min, x2_max)
     x1, x2 = np.mgrid[x1_min:x1_max:500j, x2_min:x2_max:500j]
     grid_test = np.stack((x1.flat, x2.flat), axis=1)
-    print gmm.score_samples(grid_test)
+    print(gmm.score_samples(grid_test))
     grid_hat = -gmm.score_samples(grid_test)
     grid_hat = grid_hat.reshape(x1.shape)
     plt.figure(figsize=(9, 7), facecolor='w')
@@ -63,9 +63,9 @@ if __name__ == '__main__':
         value, vector = sp.linalg.eigh(cov)
         width, height = value[0], value[1]
         v = vector[0] / sp.linalg.norm(vector[0])
-        angle = 180* np.arctan(v[1] / v[0]) / np.pi
+        angle = 180 * np.arctan(v[1] / v[0]) / np.pi
         e = Ellipse(xy=center, width=width, height=height,
-                    angle=angle, color='m', alpha=0.5, clip_box = ax.bbox)
+                    angle=angle, color='m', alpha=0.5, clip_box=ax.bbox)
         ax.add_artist(e)
 
     plt.xlim((x1_min, x1_max))

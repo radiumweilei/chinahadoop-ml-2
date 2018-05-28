@@ -9,10 +9,8 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from sklearn.metrics.pairwise import pairwise_distances_argmin
 
-
 mpl.rcParams['font.sans-serif'] = [u'SimHei']
 mpl.rcParams['axes.unicode_minus'] = False
-
 
 if __name__ == '__main__':
     style = 'sklearn'
@@ -30,9 +28,9 @@ if __name__ == '__main__':
     if style == 'sklearn':
         g = GaussianMixture(n_components=2, covariance_type='full', tol=1e-6, max_iter=1000)
         g.fit(data)
-        print '类别概率:\t', g.weights_[0]
-        print '均值:\n', g.means_, '\n'
-        print '方差:\n', g.covariances_, '\n'
+        print('类别概率:\t', g.weights_[0])
+        print('均值:\n', g.means_, '\n')
+        print('方差:\n', g.covariances_, '\n')
         mu1, mu2 = g.means_
         sigma1, sigma2 = g.covariances_
     else:
@@ -63,10 +61,10 @@ if __name__ == '__main__':
             sigma1 = np.dot(gamma * (data - mu1).T, data - mu1) / np.sum(gamma)
             sigma2 = np.dot((1 - gamma) * (data - mu2).T, data - mu2) / np.sum(1 - gamma)
             pi = np.sum(gamma) / n
-            print i, ":\t", mu1, mu2
-        print '类别概率:\t', pi
-        print '均值:\t', mu1, mu2
-        print '方差:\n', sigma1, '\n\n', sigma2, '\n'
+            print(i, ":\t", mu1, mu2)
+        print('类别概率:\t', pi)
+        print('均值:\t', mu1, mu2)
+        print('方差:\n', sigma1, '\n\n', sigma2, '\n')
 
     # 预测分类
     norm1 = multivariate_normal(mu1, sigma1)
@@ -89,7 +87,7 @@ if __name__ == '__main__':
         c1 = tau1 < tau2
     c2 = ~c1
     acc = np.mean(y == c1)
-    print u'准确率：%.2f%%' % (100*acc)
+    print(u'准确率：%.2f%%' % (100 * acc))
     ax.scatter(data[c1, 0], data[c1, 1], data[c1, 2], c='r', s=30, marker='o', depthshade=True)
     ax.scatter(data[c2, 0], data[c2, 1], data[c2, 2], c='g', s=30, marker='^', depthshade=True)
     ax.set_xlabel('X')

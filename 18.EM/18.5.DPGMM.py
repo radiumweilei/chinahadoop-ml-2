@@ -12,12 +12,11 @@ from matplotlib.patches import Ellipse
 
 def expand(a, b, rate=0.05):
     d = (b - a) * rate
-    return a-d, b+d
+    return a - d, b + d
 
 
 matplotlib.rcParams['font.sans-serif'] = [u'SimHei']
 matplotlib.rcParams['axes.unicode_minus'] = False
-
 
 if __name__ == '__main__':
     np.random.seed(0)
@@ -30,7 +29,7 @@ if __name__ == '__main__':
     x1 = x1.dot(m)
     x2 = np.random.multivariate_normal(mean=(-1, 10), cov=cov1, size=N2)
     x = np.vstack((x1, x2))
-    y = np.array([0]*N1 + [1]*N2)
+    y = np.array([0] * N1 + [1] * N2)
     n_components = 3
 
     # 绘图使用
@@ -51,8 +50,8 @@ if __name__ == '__main__':
     gmm.fit(x)
     centers = gmm.means_
     covs = gmm.covariances_
-    print 'GMM均值 = \n', centers
-    print 'GMM方差 = \n', covs
+    print('GMM均值 = \n', centers)
+    print('GMM方差 = \n', covs)
     y_hat = gmm.predict(x)
 
     grid_hat = gmm.predict(grid_test)
@@ -66,9 +65,9 @@ if __name__ == '__main__':
         value, vector = sp.linalg.eigh(cov)
         width, height = value[0], value[1]
         v = vector[0] / sp.linalg.norm(vector[0])
-        angle = 180* np.arctan(v[1] / v[0]) / np.pi
+        angle = 180 * np.arctan(v[1] / v[0]) / np.pi
         e = Ellipse(xy=center, width=width, height=height,
-                    angle=angle, color=clrs[i], alpha=0.5, clip_box = ax.bbox)
+                    angle=angle, color=clrs[i], alpha=0.5, clip_box=ax.bbox)
         ax.add_artist(e)
 
     ax1_min, ax1_max, ax2_min, ax2_max = plt.axis()
@@ -83,8 +82,8 @@ if __name__ == '__main__':
     dpgmm.fit(x)
     centers = dpgmm.means_
     covs = dpgmm.covariances_
-    print 'DPGMM均值 = \n', centers
-    print 'DPGMM方差 = \n', covs
+    print('DPGMM均值 = \n', centers)
+    print('DPGMM方差 = \n', covs)
     y_hat = dpgmm.predict(x)
     # print y_hat
 
@@ -101,9 +100,9 @@ if __name__ == '__main__':
         value, vector = sp.linalg.eigh(cov)
         width, height = value[0], value[1]
         v = vector[0] / sp.linalg.norm(vector[0])
-        angle = 180* np.arctan(v[1] / v[0]) / np.pi
+        angle = 180 * np.arctan(v[1] / v[0]) / np.pi
         e = Ellipse(xy=center, width=width, height=height,
-                    angle=angle, color='m', alpha=0.5, clip_box = ax.bbox)
+                    angle=angle, color='m', alpha=0.5, clip_box=ax.bbox)
         ax.add_artist(e)
 
     plt.xlim((x1_min, x1_max))

@@ -16,16 +16,16 @@ iris_feature = u'花萼长度', u'花萼宽度', u'花瓣长度', u'花瓣宽度
 
 def expand(a, b, rate=0.05):
     d = (b - a) * rate
-    return a-d, b+d
+    return a - d, b + d
 
 
 def iris_type(s):
-    it = {'Iris-setosa': 0, 'Iris-versicolor': 1, 'Iris-virginica': 2}
+    it = {b'Iris-setosa': 0, b'Iris-versicolor': 1, b'Iris-virginica': 2}
     return it[s]
 
 
 if __name__ == '__main__':
-    path = '..\\8.Regression\\8.iris.data'  # 数据文件路径
+    path = '../08.Regression/8.iris.data'  # 数据文件路径
     data = np.loadtxt(path, dtype=float, delimiter=',', converters={4: iris_type})
     # 将数据的0到3列组成x，第4列得到y
     x_prime, y = np.split(data, (4,), axis=1)
@@ -37,12 +37,12 @@ if __name__ == '__main__':
     for k, pair in enumerate(feature_pairs):
         x = x_prime[:, pair]
         m = np.array([np.mean(x[y == i], axis=0) for i in range(3)])  # 均值的实际值
-        print '实际均值 = \n', m
+        print('实际均值 = \n', m)
 
         gmm = GaussianMixture(n_components=n_components, covariance_type='full', random_state=0)
         gmm.fit(x)
-        print '预测均值 = \n', gmm.means_
-        print '预测方差 = \n', gmm.covariances_
+        print('预测均值 = \n', gmm.means_)
+        print('预测方差 = \n', gmm.covariances_)
         y_hat = gmm.predict(x)
         order = pairwise_distances_argmin(m, gmm.means_, axis=1, metric='euclidean')
         # print '顺序：\t', order
@@ -54,8 +54,8 @@ if __name__ == '__main__':
             change[i] = y_hat == order[i]
         for i in range(n_types):
             y_hat[change[i]] = i
-        acc = u'准确率：%.2f%%' % (100*np.mean(y_hat == y))
-        print acc
+        acc = u'准确率：%.2f%%' % (100 * np.mean(y_hat == y))
+        print(acc)
 
         cm_light = mpl.colors.ListedColormap(['#FF8080', '#77E0A0', '#A0A0FF'])
         cm_dark = mpl.colors.ListedColormap(['r', 'g', '#6060FF'])
@@ -74,7 +74,7 @@ if __name__ == '__main__':
             grid_hat[change[i]] = i
 
         grid_hat = grid_hat.reshape(x1.shape)
-        plt.subplot(3, 2, k+1)
+        plt.subplot(3, 2, k + 1)
         plt.pcolormesh(x1, x2, grid_hat, cmap=cm_light)
         plt.scatter(x[:, 0], x[:, 1], s=30, c=y, marker='o', cmap=cm_dark, edgecolors='k')
         xx = 0.95 * x1_min + 0.05 * x1_max

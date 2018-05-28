@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 
 mpl.rcParams['font.sans-serif'] = [u'SimHei']
 mpl.rcParams['axes.unicode_minus'] = False
+
+
 # from matplotlib.font_manager import FontProperties
 # font_set = FontProperties(fname=r"c:\windows\fonts\simsun.ttc", size=15)
 # fontproperties=font_set
@@ -17,20 +19,20 @@ mpl.rcParams['axes.unicode_minus'] = False
 
 def expand(a, b):
     d = (b - a) * 0.05
-    return a-d, b+d
+    return a - d, b + d
 
 
 if __name__ == '__main__':
     data = np.loadtxt('18.HeightWeight.csv', dtype=np.float, delimiter=',', skiprows=1)
-    print data.shape
+    print(data.shape)
     y, x = np.split(data, [1, ], axis=1)
     x, x_test, y, y_test = train_test_split(x, y, train_size=0.6, random_state=0)
     gmm = GaussianMixture(n_components=2, covariance_type='full', random_state=0)
     x_min = np.min(x, axis=0)
     x_max = np.max(x, axis=0)
     gmm.fit(x)
-    print '均值 = \n', gmm.means_
-    print '方差 = \n', gmm.covariances_
+    print('均值 = \n', gmm.means_)
+    print('方差 = \n', gmm.covariances_)
     y_hat = gmm.predict(x)
     y_test_hat = gmm.predict(x_test)
     change = (gmm.means_[0][0] > gmm.means_[1][0])
@@ -45,8 +47,8 @@ if __name__ == '__main__':
     acc_test = np.mean(y_test_hat.ravel() == y_test.ravel())
     acc_str = u'训练集准确率：%.2f%%' % (acc * 100)
     acc_test_str = u'测试集准确率：%.2f%%' % (acc_test * 100)
-    print acc_str
-    print acc_test_str
+    print(acc_str)
+    print(acc_test_str)
 
     cm_light = mpl.colors.ListedColormap(['#FF8080', '#77E0A0'])
     cm_dark = mpl.colors.ListedColormap(['r', 'g'])
@@ -64,18 +66,18 @@ if __name__ == '__main__':
         grid_hat[~z] = 0
     plt.figure(figsize=(9, 7), facecolor='w')
     plt.pcolormesh(x1, x2, grid_hat, cmap=cm_light)
-    plt.scatter(x[:, 0], x[:, 1], s=50, c=y, marker='o', cmap=cm_dark, edgecolors='k')
-    plt.scatter(x_test[:, 0], x_test[:, 1], s=60, c=y_test, marker='^', cmap=cm_dark, edgecolors='k')
+    plt.scatter(x[:, 0], x[:, 1], s=50, c=np.squeeze(y), marker='o', cmap=cm_dark, edgecolors='k')
+    plt.scatter(x_test[:, 0], x_test[:, 1], s=60, c=np.squeeze(y_test), marker='^', cmap=cm_dark, edgecolors='k')
 
     p = gmm.predict_proba(grid_test)
     p = p[:, 0].reshape(x1.shape)
     CS = plt.contour(x1, x2, p, levels=(0.2, 0.5, 0.8), colors=list('rgb'), linewidths=2)
     plt.clabel(CS, fontsize=15, fmt='%.1f', inline=True)
     ax1_min, ax1_max, ax2_min, ax2_max = plt.axis()
-    xx = 0.9*ax1_min + 0.1*ax1_max
-    yy = 0.1*ax2_min + 0.9*ax2_max
+    xx = 0.9 * ax1_min + 0.1 * ax1_max
+    yy = 0.1 * ax2_min + 0.9 * ax2_max
     plt.text(xx, yy, acc_str, fontsize=18)
-    yy = 0.15*ax2_min + 0.85*ax2_max
+    yy = 0.15 * ax2_min + 0.85 * ax2_max
     plt.text(xx, yy, acc_test_str, fontsize=18)
     plt.xlim((x1_min, x1_max))
     plt.ylim((x2_min, x2_max))
