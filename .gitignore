@@ -64,3 +64,6 @@ target/
 10.RandomForest/iris_tree.dot
 12.XGBoost/New_Data.csv
 14.SVM/HandWritten
+24.HMM/A.txt
+24.HMM/pi.txt
+24.HMM/B.txt
