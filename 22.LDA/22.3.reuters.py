@@ -8,7 +8,6 @@ import lda
 import lda.datasets
 from pprint import pprint
 
-
 if __name__ == "__main__":
     # document-term matrix
     X = lda.datasets.load_reuters()
@@ -28,7 +27,7 @@ if __name__ == "__main__":
     print("len(titles): {}\n".format(len(titles)))
     pprint(titles[:10])
 
-    print 'LDA start ----'
+    print('LDA start ----')
     topic_num = 20
     model = lda.LDA(n_topics=topic_num, n_iter=500, random_state=1)
     model.fit(X)
@@ -61,9 +60,9 @@ if __name__ == "__main__":
     plt.figure(figsize=(8, 9))
     # f, ax = plt.subplots(5, 1, sharex=True)
     for i, k in enumerate([0, 5, 9, 14, 19]):
-        ax = plt.subplot(5, 1, i+1)
+        ax = plt.subplot(5, 1, i + 1)
         ax.plot(topic_word[k, :], 'r-')
-        ax.set_xlim(-50, 4350)   # [0,4258]
+        ax.set_xlim(-50, 4350)  # [0,4258]
         ax.set_ylim(0, 0.08)
         ax.set_ylabel(u"概率")
         ax.set_title(u"主题 {}".format(k))
@@ -77,9 +76,9 @@ if __name__ == "__main__":
     plt.figure(figsize=(8, 9))
     # f, ax= plt.subplots(5, 1, figsize=(8, 6), sharex=True)
     for i, k in enumerate([1, 3, 4, 8, 9]):
-        ax = plt.subplot(5, 1, i+1)
+        ax = plt.subplot(5, 1, i + 1)
         ax.stem(doc_topic[k, :], linefmt='g-', markerfmt='ro')
-        ax.set_xlim(-1, topic_num+1)
+        ax.set_xlim(-1, topic_num + 1)
         ax.set_ylim(0, 1)
         ax.set_ylabel(u"概率")
         ax.set_title(u"文档 {}".format(k))
