@@ -18,22 +18,22 @@ if __name__ == '__main__':
     np.random.seed(0)
     mu1_fact = (0, 0, 0)
     cov_fact = np.identity(3)
-    data1 = np.random.multivariate_normal(mu1_fact, cov_fact, 400)
+    data1 = np.random.multivariate_normal(mu1_fact, cov_fact, 400)  # 400个样本的多元正态分布
     mu2_fact = (2, 2, 1)
     cov_fact = np.identity(3)
-    data2 = np.random.multivariate_normal(mu2_fact, cov_fact, 100)
+    data2 = np.random.multivariate_normal(mu2_fact, cov_fact, 100)  # 100个样本的多元正态分布
     data = np.vstack((data1, data2))
     y = np.array([True] * 400 + [False] * 100)
 
     if style == 'sklearn':
-        g = GaussianMixture(n_components=2, covariance_type='full', tol=1e-6, max_iter=1000)
+        g = GaussianMixture(n_components=2, covariance_type='full', tol=1e-6, max_iter=1000)  # covariance_type 有4中类型
         g.fit(data)
         print('类别概率:\t', g.weights_[0])
         print('均值:\n', g.means_, '\n')
         print('方差:\n', g.covariances_, '\n')
         mu1, mu2 = g.means_
         sigma1, sigma2 = g.covariances_
-    else:
+    else:  # 自己写代码实现的GMM
         num_iter = 100
         n, d = data.shape
         # 随机指定
